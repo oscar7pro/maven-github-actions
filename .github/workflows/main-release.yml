@@ -1,3 +1,5 @@
+name: Release deployment
+
 on:
   workflow_dispatch:
     inputs:
@@ -6,7 +8,7 @@ on:
         required: false
         default: '1.1.0'
 
-name: Release deployment
+
 jobs:
   build:
     runs-on: ubuntu-20.04
