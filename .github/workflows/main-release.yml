@@ -1,0 +1,35 @@
+on:
+  workflow_dispatch:
+    inputs:
+      release:
+        description: 'Version'
+        required: false
+        default: '1.1.0'
+
+name: Release deployment
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Merge
+        run: |
+          echo "Merging Release into Master..."
+          git checkout release
+          git checkout master
+          echo "Merging release on master..."
+          git merge release
+          git tag `cat pom.xml | grep "^    <version>.*</version>$" | awk -F'[><]' '{printf("v%s",$3)}'`
+          git push origin master --tags
+          echo "Merge done"
+          echo "Deleting release branch..."
+          git branch -D release
+          git push origin :release
+          echo "Branch removed"
+          echo "Rebasing develop ..."
+          git checkout develop
+          git rebase master
+          git push origin develop
+          echo "Rebase done"
