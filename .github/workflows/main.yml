@@ -30,6 +30,8 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 1.8
+          server-id: github
+          settings-path: ${{ github.workspace }}
 
 
       - name: Step 3 - Have Github Actions Build Maven Project
@@ -41,6 +43,12 @@ jobs:
       - name: Step 5 - What is in the target folder?
         run: |
           cd target
-          ls -a
-
+          ls -a 
+          
+      - name: Publish to GitHub Packages Apache Maven
+        run: mvn deploy -s $GITHUB_WORKSPACE/settings.xml
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+      
+      
 
