@@ -45,7 +45,7 @@ jobs:
           cd target
           ls -a 
           
-      - name: Publish to GitHub Packages Apache Maven
+      - name: tep 6 Publish to GitHub Packages Apache Maven
         run: |
             echo $GITHUB_WORKSPACE
             mvn deploy -s $GITHUB_WORKSPACE/settings.xml
